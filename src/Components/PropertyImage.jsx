@@ -8,3 +8,5 @@ export const PropertyImage = (props) => {
         </div>
     );
 };
+
+// add title in alt 
