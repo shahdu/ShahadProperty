@@ -14,11 +14,18 @@ export const App = () => {
     console.log(newProperty);
     setProperties([...properties, newProperty]);
   };
+
+
+  const handleDeleteProprty = (id) => {
+    const updatedProperties = properties.filter(property => property.id !== id);
+
+    setProperties(updatedProperties);
+  };
   return (
     <div>
       {<AddProperty onHandleAddProprty={handleAddProprty} />}
       {properties.length > 0 ? (
-        <Properties properties={properties} />
+        <Properties properties={properties} onHandleDeleteProprty={handleDeleteProprty} />
       ) : (
         "no items are available"
       )}

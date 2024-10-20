@@ -9,7 +9,8 @@ import style from "./property.module.css"
 import { Card } from "./Card";
 
 export const Property = (props) => {
-  const { image, title, price, location } = props.property;
+  const{onHandleDeleteProprty} =props;
+  const { id,image, title, price, location } = props.property;
 
   return (
     <Card>
@@ -20,8 +21,8 @@ export const Property = (props) => {
       <PropertyPrice price={price} />
       <PropertyLocation location={location} />
     </div>
+    <button   onClick={()=>onHandleDeleteProprty(id)}>Delete Property </button>
     </Card>
-
 
   );
 };
