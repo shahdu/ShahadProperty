@@ -1,31 +1,42 @@
 import React, { useState } from "react";
-import { properties  as initialProperties} from "./Data.js";
+import { properties as initialProperties } from "./Data.js";
 import { Properties } from "./Components/Properties.jsx";
 import { AddProperty } from "./Components/AddProperty.jsx";
-
+import { UpdateProperty } from "./Components/UpdateProperty.jsx";
+//useEffect for db ex :in page number
 export const App = () => {
-  // in super :
-  //1-create fun
-  //2-pass fun as propse
 
   const [properties, setProperties] = useState(initialProperties);
+  const [updateData,setUpdateData] = useState(null);
 
   const handleAddProprty = (newProperty) => {
     console.log(newProperty);
     setProperties([...properties, newProperty]);
   };
 
-
   const handleDeleteProprty = (id) => {
-    const updatedProperties = properties.filter(property => property.id !== id);
+    const updatedProperties = properties.filter(
+      (property) => property.id !== id
+    );
 
     setProperties(updatedProperties);
   };
+
+  const handleUpdateProprty = (updatedProperty) => {
+    setUpdateData(updatedProperty);
+
+  };
   return (
     <div>
+      
       {<AddProperty onHandleAddProprty={handleAddProprty} />}
+      {/* {<UpdateProperty  updateData ={updateData}/>} */}
       {properties.length > 0 ? (
-        <Properties properties={properties} onHandleDeleteProprty={handleDeleteProprty} />
+        <Properties
+          properties={properties}
+          onHandleDeleteProprty={handleDeleteProprty}
+          onHandleUpdateProprty={handleUpdateProprty}
+        />
       ) : (
         "no items are available"
       )}

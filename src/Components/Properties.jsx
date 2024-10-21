@@ -4,7 +4,7 @@ import { Property } from "./property";
 import style from "./properties.module.css";
 
 export const Properties = (props) => {
-  const { onHandleDeleteProprty } = props;
+  const { onHandleDeleteProprty ,onHandleUpdateProprty   } = props;
 
   const { properties } = props;
   return (
@@ -16,6 +16,7 @@ export const Properties = (props) => {
             property={property}
             key={property.id}
             onHandleDeleteProprty={onHandleDeleteProprty}
+            onHandleUpdateProprty={onHandleUpdateProprty}
           />
         );
       })}
