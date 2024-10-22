@@ -1,9 +1,9 @@
 export const uploadImageToCloudinary = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', 'kbekf6c6'); // Ensure you have set up an upload preset in Cloudinary
-    formData.append('folder', 'property'); // Specify the folder where you want to store the image
-  // db2texgwr
+    formData.append('upload_preset', 'kbekf6c6'); 
+    formData.append('folder', 'property'); 
+
     try {
       const response = await fetch(
         `https://api.cloudinary.com/v1_1/dndemnyvy/image/upload`,
@@ -18,7 +18,7 @@ export const uploadImageToCloudinary = async (file) => {
       }
   
       const data = await response.json();
-      return data.secure_url; // Return the secure URL of the uploaded image
+      return data.secure_url; 
     } catch (error) {
       console.error('Error uploading image to Cloudinary:', error);
       throw error;

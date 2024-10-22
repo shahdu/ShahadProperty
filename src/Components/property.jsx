@@ -30,8 +30,7 @@ export const Property = (props) => {
         <PropertyLocation location={location} />
       </div>
       <button onClick={() => handelDelete(id)}>Delete Property </button>
-      <button onClick={() => handelUpdate(props.property)}>
-        edit Property{" "}
+      <button onClick={() => handelUpdate(props.property)}> Edit Property{" "}
       </button>
     </Card>
   );

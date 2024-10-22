@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 export const UpdateProperty = (props) => {
+  //destructuring and renaming
   const {
     id: updateId,
     title: updateTitle,
@@ -10,13 +11,15 @@ export const UpdateProperty = (props) => {
   } = props.updateData || {};
 
   const [property, setProperty] = useState({
+    id: updateId,
     title: updateTitle,
-    image: updateImage || "",
-    location: updateLocation || "",
-    price: updatePrice || 0,
+    image: updateImage,
+    location: updateLocation,
+    price: updatePrice,
   });
 
   const handleChange = (event) => {
+    //Update state with user input value
     setProperty((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
@@ -25,26 +28,16 @@ export const UpdateProperty = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const updateProperty = {
-      title: property.title,
-      image: property.image,
-      price: property.price,
-      location: property.location,
-    };
-    setProperty({
-      id: updateId,
-      title: "",
-      image: "",
-      location: "",
-      price: 0,
-    });
+    // Pass the updated property back to the parent component
+    props.onUpdateSubmit(property);
   };
+
   return (
     <div id="update-property">
-      <h1>update property</h1>
+      <h1>Update Property</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="title"> Title:</label>
+          <label htmlFor="title">Title:</label>
           <input
             name="title"
             type="text"
@@ -55,7 +48,7 @@ export const UpdateProperty = (props) => {
           />
         </div>
         <div>
-          <label htmlFor="image"> Image:</label>
+          <label htmlFor="image">Image:</label>
           <input
             name="image"
             type="text"
@@ -66,10 +59,10 @@ export const UpdateProperty = (props) => {
           />
         </div>
         <div>
-          <label htmlFor="price"> Price:</label>
+          <label htmlFor="price">Price:</label>
           <input
             name="price"
-            type="Number"
+            type="number"
             id="price"
             value={property.price}
             onChange={handleChange}
@@ -77,7 +70,7 @@ export const UpdateProperty = (props) => {
           />
         </div>
         <div>
-          <label htmlFor="location"> Location:</label>
+          <label htmlFor="location">Location:</label>
           <input
             name="location"
             type="text"
@@ -87,7 +80,7 @@ export const UpdateProperty = (props) => {
             required
           />
         </div>
-        <button type="submit">update Property</button>
+        <button type="submit">Update Property</button>
       </form>
     </div>
   );

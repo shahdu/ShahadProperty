@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { nanoid } from "nanoid";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { uploadImageToCloudinary } from '../Utility/UploadImage'; // adjust the path
+
+import { uploadImageToCloudinary } from '../Utility/UploadImage'; 
 
 
 export const AddProperty = (props) => {
