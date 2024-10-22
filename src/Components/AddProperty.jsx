@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { nanoid } from "nanoid";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { uploadImageToCloudinary } from '../Utility/UploadImage'; // adjust the path
+
 
 export const AddProperty = (props) => {
   const [property, setProperty] = useState({
@@ -14,6 +16,7 @@ export const AddProperty = (props) => {
   const [errors, setErrors] = useState({});
 
   const notify = () => toast.success("Successfuly Added");
+
   const handleChange = (event) => {
     setProperty((prevState) => ({
       ...prevState,
@@ -50,13 +53,15 @@ export const AddProperty = (props) => {
     return Object.keys(newError).length === 0; // return true if no error
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const imageUrl =await uploadImageToCloudinary(property.image)
+
     if (validDataInput()) {
       const newProperty = {
         id: nanoid(),
         title: property.title,
-        image: property.image,
+        image: imageUrl,
         price: property.price,
         location: property.location,
       };
@@ -70,6 +75,14 @@ export const AddProperty = (props) => {
       });
     } else {
     }
+  };
+  const handImageChange = (event) => {
+    console.log(event.target.files[0]);
+    setProperty((prevState) => ({
+      ...prevState,
+
+      [event.target.name]: event.target.files[0],
+    }));
   };
   return (
     <div id="add-property">
@@ -94,12 +107,21 @@ export const AddProperty = (props) => {
           <label htmlFor="image"> Image:</label>
           <input
             name="image"
-            type="text"
+            type="file"
             id="image"
-            value={property.image}
-            onChange={handleChange}
+            onChange={handImageChange}
             required
           />
+          {property.image && (
+            <div>
+              <img
+                className="user-img"
+                src={URL.createObjectURL(property.image)}
+                alt=" selected preview"
+                style={{ maxWidth: "30px ", height: "auto", marginTop: "10px" }}
+              />
+            </div>
+          )}
         </div>
         <div>
           <label htmlFor="price"> Price:</label>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import { properties as initialProperties } from "./Data.js";
 import { Properties } from "./Components/Properties.jsx";
 import { AddProperty } from "./Components/AddProperty.jsx";
