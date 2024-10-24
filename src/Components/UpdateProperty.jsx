@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const UpdateProperty = (props) => {
+  const navigate = useNavigate();
+
   //destructuring and renaming
   const {
     id: updateId,
-    title: updateTitle,
+    title: updateTitle, 
     image: updateImage,
     location: updateLocation,
     price: updatePrice,
@@ -30,8 +33,10 @@ export const UpdateProperty = (props) => {
     event.preventDefault();
     // Pass the updated property back to the parent component
     props.onUpdateSubmit(property);
-  };
+    navigate("/");
 
+  };
+  
   return (
     <div id="update-property">
       <h1>Update Property</h1>

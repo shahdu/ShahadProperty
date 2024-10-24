@@ -3,16 +3,19 @@ import { nanoid } from "nanoid";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { uploadImageToCloudinary } from '../Utility/UploadImage'; 
-
+import { uploadImageToCloudinary } from "../Utility/UploadImage";
+import { useNavigate } from "react-router-dom";
 
 export const AddProperty = (props) => {
-  const [property, setProperty] = useState({
+  const navigate = useNavigate();
+
+  const initalValue = {
     title: "",
     image: "",
     location: "",
     price: 0,
-  });
+  };
+  const [property, setProperty] = useState(initalValue);
 
   const [errors, setErrors] = useState({});
 
@@ -40,7 +43,7 @@ export const AddProperty = (props) => {
     }
 
     if (!property.price.trim()) {
-      newError.location = "price is required";
+      newError.price = "price is required";
     }
     if (!/^[0-9]+(\.[0-9]{1,2})?$/.test(property.price)) {
       newError.price = "price must be number";
@@ -56,7 +59,7 @@ export const AddProperty = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const imageUrl =await uploadImageToCloudinary(property.image)
+    const imageUrl = await uploadImageToCloudinary(property.image);
 
     if (validDataInput()) {
       const newProperty = {
@@ -68,14 +71,9 @@ export const AddProperty = (props) => {
       };
 
       props.onHandleAddProprty(newProperty);
-      setProperty({
-        title: "",
-        image: "",
-        location: "",
-        price: 0,
-      });
-    } else {
-    }
+      setProperty(initalValue);
+      navigate("/");
+    } 
   };
   const handImageChange = (event) => {
     console.log(event.target.files[0]);
@@ -100,7 +98,6 @@ export const AddProperty = (props) => {
             required
           />
           <div className="error">
-            {" "}
             {errors.title && <span>{errors.title}</span>}
           </div>
         </div>
@@ -135,8 +132,7 @@ export const AddProperty = (props) => {
             required
           />
           <div className="error">
-            {" "}
-            {errors.price && <span>{errors.price}</span>}
+           {errors.price && <span>{errors.price}</span>}
           </div>
         </div>
         <div>
@@ -150,7 +146,6 @@ export const AddProperty = (props) => {
             required
           />
           <div className="error">
-            {" "}
             {errors.location && <span>{errors.location}</span>}
           </div>
         </div>
