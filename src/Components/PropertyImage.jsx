@@ -9,4 +9,3 @@ export const PropertyImage = (props) => {
     );
 };
 
-// add title in alt 

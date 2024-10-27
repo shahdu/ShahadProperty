@@ -20,7 +20,11 @@ export const Signin = () => {
     event.preventDefault();
 
     const loginInfo = JSON.parse(localStorage.getItem("userInfo"));
-    if (loginInfo !==null && loginInfo.email === user.email && loginInfo.password === user.password) {
+    if (
+      loginInfo !== null &&
+      loginInfo.email === user.email &&
+      loginInfo.password === user.password
+    ) {
       const updatedLoginInfo = { ...loginInfo, isSignIn: true };
       localStorage.setItem("userInfo", JSON.stringify(updatedLoginInfo));
       navigate("/dashboard/user/profile", { state: updatedLoginInfo });
@@ -28,14 +32,13 @@ export const Signin = () => {
       setError("Invalid email or password.");
     }
   };
-  
 
   return (
     <div>
       <h1>Sign In</h1>
       <form onSubmit={handleSubmit}>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        
+
         <div>
           <label htmlFor="email">Email:</label>
           <input
@@ -47,9 +50,7 @@ export const Signin = () => {
             required
           />
         </div>
-
         <br />
-
         <div>
           <label htmlFor="password">Password:</label>
           <input

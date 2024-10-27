@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import { PropertyImage } from "./PropertyImage";
 import { PropertyTitle } from "./PropertyTitle";
@@ -6,7 +7,6 @@ import { PropertyPrice } from "./PropertyPrice";
 import { PropertyLocation } from "./PropertyLocation";
 import { Card } from "./Card";
 import style from "./property.module.css";
-import { useNavigate } from "react-router-dom";
 
 export const Property = (props) => {
   const { onHandleDeleteProprty, onHandleUpdateProprty } = props;
@@ -20,7 +20,6 @@ export const Property = (props) => {
   const handelUpdate = (property) => {
     onHandleUpdateProprty(property);
     navigate("dashboard/admin/updateProperty");
-
   };
 
   return (
@@ -32,7 +31,13 @@ export const Property = (props) => {
           <PropertyPrice price={price} />
           <PropertyLocation location={location} />
         </div>
-        <button onClick={() =>{ handelDelete(id); }}>Delete Property </button>
+        <button
+          onClick={() => {
+            handelDelete(id);
+          }}
+        >
+          Delete Property{" "}
+        </button>
         <button
           onClick={() => {
             handelUpdate(props.property);

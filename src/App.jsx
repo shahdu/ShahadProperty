@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-  Link,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -16,8 +11,6 @@ import { UpdateProperty } from "./Components/UpdateProperty.jsx";
 import { Navbar } from "./Layout/Navbar.jsx";
 import { Signin } from "./Components/Signin.jsx";
 import { Profile } from "./Components/Profile.jsx";
-import { UserDashboard } from "./Components/UserDashboard.jsx";
-import { AdminDashboard } from "./Components/AdminDashboard.jsx";
 import { ProtectedRoute } from "./Routes/ProtectedRoute.jsx";
 import { AdminRoute } from "./Routes/AdminRoute.jsx";
 import { Signup } from "./Components/Signup.jsx";
@@ -25,7 +18,6 @@ import { Signup } from "./Components/Signup.jsx";
 export const App = () => {
   const [properties, setProperties] = useState(initialProperties);
   const [updateData, setUpdateData] = useState(null);
-
 
   const handleAddProprty = (newProperty) => {
     console.log(newProperty);
@@ -36,16 +28,12 @@ export const App = () => {
     const updatedProperties = properties.filter(
       (property) => property.id !== id
     );
-
     setProperties(updatedProperties);
     toast.success("Property successfully deleted!");
-
-
   };
 
   const handleUpdateProprty = (updatedProperty) => {
     setUpdateData(updatedProperty);
-
   };
 
   const handleUpdateSubmit = (updatedProperty) => {
@@ -56,11 +44,12 @@ export const App = () => {
     setProperties(updatedProperties);
     setUpdateData(null);
   };
+
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Navbar />,
-      errorElement: <ErrorPage />, // Restore this for better error visibility
+      errorElement: <ErrorPage />,
       children: [
         {
           path: "/",
@@ -72,7 +61,7 @@ export const App = () => {
                 onHandleUpdateProprty={handleUpdateProprty}
               />
             ) : (
-              "no items are available"
+              <h1>Sorry no items are available!</h1>
             ),
         },
         {
@@ -85,15 +74,16 @@ export const App = () => {
         },
         {
           path: "/signout",
-          element:  properties.length > 0 ? (
-            <Properties
-              properties={properties}
-              onHandleDeleteProprty={handleDeleteProprty}
-              onHandleUpdateProprty={handleUpdateProprty}
-            />
-          ) : (
-            "no items are available"
-          ),
+          element:
+            properties.length > 0 ? (
+              <Properties
+                properties={properties}
+                onHandleDeleteProprty={handleDeleteProprty}
+                onHandleUpdateProprty={handleUpdateProprty}
+              />
+            ) : (
+              <h1>Sorry no items are available!</h1>
+            ),
         },
         {
           path: "/dashboard/user",
@@ -104,13 +94,12 @@ export const App = () => {
               element: <Profile />,
             },
           ],
-        }
-        ,
+        },
         {
           path: "/dashboard/admin",
           element: <AdminRoute />,
-          children:[
-             {
+          children: [
+            {
               path: "addproperty",
               element: <AddProperty onHandleAddProprty={handleAddProprty} />,
             },
@@ -122,17 +111,18 @@ export const App = () => {
                   onUpdateSubmit={handleUpdateSubmit}
                 />
               ),
-            }
-          ]
+            },
+          ],
         },
-      
       ],
     },
   ]);
 
   return (
     <>
-      <header>Properties Website</header>
+      <header>
+        <h1>Welcome To The Properties Website</h1>
+      </header>
       <main>
         <div>
           <RouterProvider router={router} />

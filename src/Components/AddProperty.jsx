@@ -20,12 +20,12 @@ export const AddProperty = (props) => {
   const [errors, setErrors] = useState({});
 
   const notify = () => {
-    if(validDataInput){
+    if (validDataInput) {
       toast.success("Successfuly Added");
-    }else {
-      toast.error("Please fix the errors before submitting."); 
-    };
-}
+    } else {
+      toast.error("Please fix the errors before submitting.");
+    }
+  };
 
   const handleChange = (event) => {
     setProperty((prevState) => ({
@@ -41,7 +41,7 @@ export const AddProperty = (props) => {
       newError.title = "Title must be at least 3 character";
     }
     if (!/^[a-zA-Z\s]+$/.test(property.title)) {
-      newError.title = "only char";
+      newError.title = "only character";
     }
 
     if (!property.location.trim() || property.location.length < 5) {
@@ -78,7 +78,7 @@ export const AddProperty = (props) => {
       props.onHandleAddProprty(newProperty);
       setProperty(initalValue);
       navigate("/");
-    } 
+    }
   };
   const handImageChange = (event) => {
     console.log(event.target.files[0]);
@@ -154,7 +154,9 @@ export const AddProperty = (props) => {
             {errors.location && <span>{errors.location}</span>}
           </div>
         </div>
-        <button type="submit" onClick={()=>notify()}>Add Property</button>
+        <button type="submit" onClick={() => notify()}>
+          Add Property
+        </button>
         <ToastContainer
           position="top-center"
           autoClose={5000}

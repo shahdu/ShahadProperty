@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { uploadImageToCloudinary } from "../Utility/UploadImage";
@@ -9,12 +9,12 @@ export const UpdateProperty = (props) => {
   const navigate = useNavigate();
 
   const notify = () => {
-    if(validDataInput){
+    if (validDataInput) {
       toast.success("Successfuly Updated");
-    }else {
-      toast.error("Please fix the errors before submitting."); 
-    };
-}
+    } else {
+      toast.error("Please fix the errors before submitting.");
+    }
+  };
   const {
     id: updateId,
     title: updateTitle,
@@ -45,7 +45,7 @@ export const UpdateProperty = (props) => {
       newError.title = "Title must be at least 3 character";
     }
     if (!/^[a-zA-Z\s]+$/.test(property.title)) {
-      newError.title = "only char";
+      newError.title = "only character is allowed";
     }
     if (!property.location.trim() || property.location.length < 5) {
       newError.location = "location must be at least 5 character";
@@ -171,7 +171,9 @@ export const UpdateProperty = (props) => {
             {errors.location && <span>{errors.location}</span>}
           </div>
         </div>
-        <button type="submit" onClick={()=>notify()}>Update Property</button>
+        <button type="submit" onClick={() => notify()}>
+          Update Property
+        </button>
       </form>
     </div>
   );

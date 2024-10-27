@@ -89,9 +89,7 @@ export const Signup = () => {
           />
           {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
         </div>
-
         <br />
-
         <div>
           <label htmlFor="email">Email:</label>
           <input
@@ -102,10 +100,8 @@ export const Signup = () => {
             onChange={handleChange}
             required
           />
-        {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
-
+          {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
         </div>
-
         <br />
         <div>
           <label htmlFor="password">Password:</label>
@@ -117,7 +113,7 @@ export const Signup = () => {
             onChange={handleChange}
             required
           />
-             {errors.password && <p style={{ color: "red" }}>{errors.password}</p>}
+          {errors.password && <p style={{ color: "red" }}>{errors.password}</p>}
         </div>
 
         <button>Sign Up</button>
