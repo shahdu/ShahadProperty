@@ -23,7 +23,7 @@ export const Property = (props) => {
 
   const handelUpdate = (property) => {
     onHandleUpdateProprty(property);
-    navigate("/updateProperty");
+    navigate("dashboard/admin/updateProperty");
 
   };
 

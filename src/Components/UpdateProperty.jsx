@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { uploadImageToCloudinary } from "../Utility/UploadImage";
 
 export const UpdateProperty = (props) => {
   const navigate = useNavigate();
 
-  //destructuring and renaming
   const {
     id: updateId,
-    title: updateTitle, 
+    title: updateTitle,
     image: updateImage,
     location: updateLocation,
     price: updatePrice,
@@ -20,23 +20,48 @@ export const UpdateProperty = (props) => {
     location: updateLocation,
     price: updatePrice,
   });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (event) => {
-    //Update state with user input value
     setProperty((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
     }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Pass the updated property back to the parent component
-    props.onUpdateSubmit(property);
-    navigate("/");
-
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setProperty((prevState) => ({
+        ...prevState,
+        image: file,
+      }));
+    }
   };
-  
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    let imageUrl = property.image;
+
+    // If there's a new file, upload it to Cloudinary
+    if (property.image && typeof property.image === "object") {
+      try {
+        imageUrl = await uploadImageToCloudinary(property.image);
+      } catch (error) {
+        console.error("Image upload failed:", error);
+        return;
+      }
+    }
+
+    const updatedProperty = {
+      ...property,
+      image: imageUrl,
+    };
+
+    props.onUpdateSubmit(updatedProperty);
+    navigate("/");
+  };
+
   return (
     <div id="update-property">
       <h1>Update Property</h1>
@@ -56,12 +81,25 @@ export const UpdateProperty = (props) => {
           <label htmlFor="image">Image:</label>
           <input
             name="image"
-            type="text"
+            type="file"
             id="image"
-            value={property.image}
-            onChange={handleChange}
-            required
+            onChange={handleImageChange}
           />
+          {property.image && typeof property.image === "object" ? (
+            <img
+              src={URL.createObjectURL(property.image)}
+              alt="Preview"
+              style={{ maxWidth: "100px", height: "auto", marginTop: "10px" }}
+            />
+          ) : (
+            property.image && (
+              <img
+                src={property.image}
+                alt="Current Property"
+                style={{ maxWidth: "100px", height: "auto", marginTop: "10px" }}
+              />
+            )
+          )}
         </div>
         <div>
           <label htmlFor="price">Price:</label>

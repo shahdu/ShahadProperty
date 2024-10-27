@@ -6,12 +6,18 @@ import {
   Link,
 } from "react-router-dom";
 
-import  ErrorPage  from "./Utility/ErrorPage.jsx";
+import ErrorPage from "./Utility/ErrorPage.jsx";
 import { properties as initialProperties } from "./Data.js";
 import { Properties } from "./Components/Properties.jsx";
 import { AddProperty } from "./Components/AddProperty.jsx";
 import { UpdateProperty } from "./Components/UpdateProperty.jsx";
 import { Navbar } from "./Layout/Navbar.jsx";
+import { Signin } from "./Components/Signin.jsx";
+import { Profile } from "./Components/Profile.jsx";
+import { UserDashboard } from "./Components/UserDashboard.jsx";
+import { AdminDashboard } from "./Components/AdminDashboard.jsx";
+import { ProtectedRoute } from "./Routes/ProtectedRoute.jsx";
+import { AdminRoute } from "./Routes/AdminRoute.jsx";
 
 export const App = () => {
   const [properties, setProperties] = useState(initialProperties);
@@ -62,18 +68,52 @@ export const App = () => {
             ),
         },
         {
-          path: "/addProperty",
-          element: <AddProperty onHandleAddProprty={handleAddProprty} />,
+          path: "/signin",
+          element: <Signin />,
         },
         {
-          path: "/updateProperty",
-          element: updateData && (
-            <UpdateProperty
-              updateData={updateData}
-              onUpdateSubmit={handleUpdateSubmit}
+          path: "/signout",
+          element:  properties.length > 0 ? (
+            <Properties
+              properties={properties}
+              onHandleDeleteProprty={handleDeleteProprty}
+              onHandleUpdateProprty={handleUpdateProprty}
             />
+          ) : (
+            "no items are available"
           ),
         },
+        {
+          path: "/dashboard/user",
+          element: <ProtectedRoute />,
+          children: [
+            {
+              path: "profile",
+              element: <Profile />,
+            },
+          ],
+        }
+        ,
+        {
+          path: "/dashboard/admin",
+          element: <AdminRoute />,
+          children:[
+             {
+              path: "addproperty",
+              element: <AddProperty onHandleAddProprty={handleAddProprty} />,
+            },
+            {
+              path: "updateProperty",
+              element: updateData && (
+                <UpdateProperty
+                  updateData={updateData}
+                  onUpdateSubmit={handleUpdateSubmit}
+                />
+              ),
+            }
+          ]
+        },
+      
       ],
     },
   ]);
