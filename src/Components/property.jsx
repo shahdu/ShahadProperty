@@ -1,51 +1,40 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
-import { PropertyImage } from "./PropertyImage";
-import { PropertyTitle } from "./PropertyTitle";
-import { PropertyPrice } from "./PropertyPrice";
-import { PropertyLocation } from "./PropertyLocation";
 import { Card } from "./Card";
-import style from "./property.module.css";
 
 export const Property = (props) => {
   const { onHandleDeleteProprty, onHandleUpdateProprty } = props;
   const { id, image, title, price, location } = props.property;
   const navigate = useNavigate();
 
-  const handelDelete = (id) => {
+  const handleDelete = () => {
     onHandleDeleteProprty(id);
   };
 
-  const handelUpdate = (property) => {
-    onHandleUpdateProprty(property);
+  const handleUpdate = () => {
+    onHandleUpdateProprty(props.property);
     navigate("dashboard/admin/updateProperty");
   };
 
   return (
-    <>
-      <Card>
-        <div className={style.property}>
-          <PropertyImage image={image} />
-          <PropertyTitle title={title} />
-          <PropertyPrice price={price} />
-          <PropertyLocation location={location} />
-        </div>
-        <button
-          onClick={() => {
-            handelDelete(id);
-          }}
-        >
-          Delete Property{" "}
+    <Card>
+      <div className="card-header bg-primary text-white text-center">
+        Featured Property
+      </div>
+      <img src={image} className="card-img-top" alt={title} />
+      <div className="card-body">
+        <h5 className="card-title">{title}</h5>
+        <p className="card-text">Price: {price}</p>
+        <p className="card-text">Location: {location}</p>
+      </div>
+      <div className="card-footer d-flex justify-content-between">
+        <button className="btn btn-danger" onClick={handleDelete}>
+          Delete Property
         </button>
-        <button
-          onClick={() => {
-            handelUpdate(props.property);
-          }}
-        >
+        <button className="btn btn-secondary" onClick={handleUpdate}>
           Edit Property
         </button>
-      </Card>
-    </>
+      </div>
+    </Card>
   );
 };

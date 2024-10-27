@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export const Signin = () => {
   const navigate = useNavigate();
@@ -34,36 +35,38 @@ export const Signin = () => {
   };
 
   return (
-    <div>
-      <h1>Sign In</h1>
-      <form onSubmit={handleSubmit}>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+    <div className="container mt-5">
+      <h1 className="text-center mb-4">Sign In</h1>
+      <form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm">
+        {error && <p className="text-danger">{error}</p>}
 
-        <div>
-          <label htmlFor="email">Email:</label>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">Email:</label>
           <input
-            type="text"
+            type="email"
             name="email"
             id="email"
             value={user.email}
             onChange={handleChange}
             required
+            className="form-control"
           />
         </div>
-        <br />
-        <div>
-          <label htmlFor="password">Password:</label>
+
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">Password:</label>
           <input
-            type="text"
+            type="password"
             name="password"
             id="password"
             value={user.password}
             onChange={handleChange}
             required
+            className="form-control"
           />
         </div>
 
-        <button>Sign In</button>
+        <button type="submit" className="btn btn-primary w-100">Sign In</button>
       </form>
     </div>
   );

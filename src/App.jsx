@@ -14,12 +14,12 @@ import { Profile } from "./Components/Profile.jsx";
 import { ProtectedRoute } from "./Routes/ProtectedRoute.jsx";
 import { AdminRoute } from "./Routes/AdminRoute.jsx";
 import { Signup } from "./Components/Signup.jsx";
-
+import "./Components/BootstrapStyles";
 export const App = () => {
   const [properties, setProperties] = useState(initialProperties);
   const [updateData, setUpdateData] = useState(null);
 
-  const handleAddProprty = (newProperty) => {
+  const handleAddProprty = (newProperty) => { 
     console.log(newProperty);
     setProperties([...properties, newProperty]);
   };
@@ -44,7 +44,6 @@ export const App = () => {
     setProperties(updatedProperties);
     setUpdateData(null);
   };
-
   const router = createBrowserRouter([
     {
       path: "/",
@@ -120,16 +119,17 @@ export const App = () => {
 
   return (
     <>
-      <header>
-        <h1>Welcome To The Properties Website</h1>
-      </header>
-      <main>
-        <div>
-          <RouterProvider router={router} />
-          <ToastContainer />
-        </div>
-      </main>
-      <footer>Developed by Shahad Alzoman</footer>
+      
+      <header className="bg-primary text-white p-3 text-center">
+  <h1 className="display-4">Welcome To The Properties Website</h1>
+</header>
+<main className="container my-4">
+  <RouterProvider router={router} />
+  <ToastContainer position="top-center" autoClose={3000} />
+</main>
+<footer className="text-center bg-light py-3 mt-4">
+  Developed by Shahad Alzoman
+</footer>
     </>
   );
 };

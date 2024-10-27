@@ -1,8 +1,6 @@
 import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-import style from "./Card.module.css";
-
-export const Card = (props) => {
-  return <div className={style.card}>{props.children}</div>;
+export const Card = ({ children }) => {
+  return <div className="card mb-4 shadow-sm">{children}</div>;
 };
-

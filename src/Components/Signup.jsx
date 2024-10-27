@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { nanoid } from "nanoid";
+import "bootstrap/dist/css/bootstrap.min.css"; 
 
 export const Signup = () => {
   const navigate = useNavigate();
@@ -17,14 +18,15 @@ export const Signup = () => {
       [event.target.name]: event.target.value,
     }));
   };
+
   const validDataInput = () => {
     const newError = {};
 
     if (!user.name.trim() || user.name.length < 2) {
-      newError.name = "Name must be at least 2 char";
+      newError.name = "Name must be at least 2 characters";
     }
     if (!/^[a-zA-Z\s]+$/.test(user.name)) {
-      newError.name = "only char";
+      newError.name = "Only characters are allowed";
     }
 
     if (!user.email.trim()) {
@@ -51,7 +53,6 @@ export const Signup = () => {
     }
 
     setErrors(newError);
-
     return Object.keys(newError).length === 0; // return true if no error
   };
 
@@ -74,11 +75,11 @@ export const Signup = () => {
   };
 
   return (
-    <div>
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name:</label>
+    <div className="container mt-5">
+      <h1 className="text-center mb-4">Sign Up</h1>
+      <form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm">
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">Name:</label>
           <input
             type="text"
             name="name"
@@ -86,12 +87,13 @@ export const Signup = () => {
             value={user.name}
             onChange={handleChange}
             required
+            className="form-control"
           />
-          {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
+          {errors.name && <p className="text-danger">{errors.name}</p>}
         </div>
-        <br />
-        <div>
-          <label htmlFor="email">Email:</label>
+
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">Email:</label>
           <input
             type="text"
             name="email"
@@ -99,24 +101,26 @@ export const Signup = () => {
             value={user.email}
             onChange={handleChange}
             required
+            className="form-control"
           />
-          {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
+          {errors.email && <p className="text-danger">{errors.email}</p>}
         </div>
-        <br />
-        <div>
-          <label htmlFor="password">Password:</label>
+
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">Password:</label>
           <input
-            type="text"
+            type="password"
             name="password"
             id="password"
             value={user.password}
             onChange={handleChange}
             required
+            className="form-control"
           />
-          {errors.password && <p style={{ color: "red" }}>{errors.password}</p>}
+          {errors.password && <p className="text-danger">{errors.password}</p>}
         </div>
 
-        <button>Sign Up</button>
+        <button type="submit" className="btn btn-primary w-100">Sign Up</button>
       </form>
     </div>
   );

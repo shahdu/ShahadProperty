@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify"; 
 import "react-toastify/dist/ReactToastify.css";
+import "bootstrap/dist/css/bootstrap.min.css"; 
 
 import { uploadImageToCloudinary } from "../Utility/UploadImage";
 
 export const UpdateProperty = (props) => {
   const navigate = useNavigate();
 
-  const notify = () => {
-    if (validDataInput) {
-      toast.success("Successfuly Updated");
+  const notify = (message, isSuccess) => {
+    if (isSuccess) {
+      toast.success(message);
     } else {
-      toast.error("Please fix the errors before submitting.");
+      toast.error(message);
     }
   };
+
   const {
     id: updateId,
     title: updateTitle,
@@ -30,6 +32,7 @@ export const UpdateProperty = (props) => {
     location: updateLocation,
     price: updatePrice,
   });
+
   const [errors, setErrors] = useState({});
 
   const handleChange = (event) => {
@@ -38,32 +41,31 @@ export const UpdateProperty = (props) => {
       [event.target.name]: event.target.value,
     }));
   };
+
   const validDataInput = () => {
     const newError = {};
 
     if (!property.title.trim() || property.title.length < 3) {
-      newError.title = "Title must be at least 3 character";
+      newError.title = "Title must be at least 3 characters";
     }
     if (!/^[a-zA-Z\s]+$/.test(property.title)) {
-      newError.title = "only character is allowed";
+      newError.title = "Only characters are allowed";
     }
     if (!property.location.trim() || property.location.length < 5) {
-      newError.location = "location must be at least 5 character";
+      newError.location = "Location must be at least 5 characters";
     }
-
     if (!property.price) {
-      newError.price = "price is required";
+      newError.price = "Price is required";
     }
     if (!/^[0-9]+(\.[0-9]{1,2})?$/.test(property.price)) {
-      newError.price = "price must be number";
+      newError.price = "Price must be a number";
     }
     if (property.price < 0) {
-      newError.price = "price must be postive";
+      newError.price = "Price must be positive";
     }
 
     setErrors(newError);
-
-    return Object.keys(newError).length === 0; // return true if no error
+    return Object.keys(newError).length === 0;
   };
 
   const handleImageChange = (event) => {
@@ -79,102 +81,119 @@ export const UpdateProperty = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    let imageUrl = property.image;
-    if (validDataInput()) {
-      // If there's a new file, upload it to Cloudinary
-      if (property.image && typeof property.image === "object") {
-        try {
-          imageUrl = await uploadImageToCloudinary(property.image);
-        } catch (error) {
-          console.error("Image upload failed:", error);
-          return;
-        }
-      }
-
-      const updatedProperty = {
-        ...property,
-        image: imageUrl,
-      };
-
-      props.onUpdateSubmit(updatedProperty);
-      navigate("/");
+    if (!validDataInput()) {
+      notify("Please fix the errors before submitting.", false);
+      return; 
     }
+
+    let imageUrl = property.image;
+    if (property.image && typeof property.image === "object") {
+      try {
+        imageUrl = await uploadImageToCloudinary(property.image);
+      } catch (error) {
+        console.error("Image upload failed:", error);
+        notify("Image upload failed. Please try again.", false);
+        return;
+      }
+    }
+
+    const updatedProperty = {
+      ...property,
+      image: imageUrl,
+    };
+
+    props.onUpdateSubmit(updatedProperty);
+    notify("Successfully Updated", true); 
+    navigate("/");
   };
 
   return (
-    <div id="update-property">
-      <h1>Update Property</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">Title:</label>
+    <div className="container mt-5">
+      <h1 className="text-center mb-4">Update Property</h1>
+      <form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm">
+        <div className="mb-3">
+          <label htmlFor="title" className="form-label">Title:</label>
           <input
             name="title"
             type="text"
             id="title"
             value={property.title}
             onChange={handleChange}
+            className={`form-control ${errors.title ? "is-invalid" : ""}`}
             required
           />
-          <div className="error">
-            {errors.title && <span>{errors.title}</span>}
-          </div>
+          {errors.title && <div className="invalid-feedback">{errors.title}</div>}
         </div>
-        <div>
-          <label htmlFor="image">Image:</label>
+
+        <div className="mb-3">
+          <label htmlFor="image" className="form-label">Image:</label>
           <input
             name="image"
             type="file"
             id="image"
             onChange={handleImageChange}
+            className="form-control"
           />
           {property.image && typeof property.image === "object" ? (
             <img
               src={URL.createObjectURL(property.image)}
               alt="Preview"
-              style={{ maxWidth: "100px", height: "auto", marginTop: "10px" }}
+              className="img-thumbnail mt-2"
+              style={{ maxWidth: "100px", height: "auto" }}
             />
           ) : (
             property.image && (
               <img
                 src={property.image}
                 alt="Current Property"
-                style={{ maxWidth: "100px", height: "auto", marginTop: "10px" }}
+                className="img-thumbnail mt-2"
+                style={{ maxWidth: "100px", height: "auto" }}
               />
             )
           )}
         </div>
-        <div>
-          <label htmlFor="price">Price:</label>
+
+        <div className="mb-3">
+          <label htmlFor="price" className="form-label">Price:</label>
           <input
             name="price"
             type="number"
             id="price"
             value={property.price}
             onChange={handleChange}
+            className={`form-control ${errors.price ? "is-invalid" : ""}`}
             required
           />
-          <div className="error">
-            {errors.price && <span>{errors.price}</span>}
-          </div>
+          {errors.price && <div className="invalid-feedback">{errors.price}</div>}
         </div>
-        <div>
-          <label htmlFor="location">Location:</label>
+
+        <div className="mb-3">
+          <label htmlFor="location" className="form-label">Location:</label>
           <input
             name="location"
             type="text"
             id="location"
             value={property.location}
             onChange={handleChange}
+            className={`form-control ${errors.location ? "is-invalid" : ""}`}
             required
           />
-          <div className="error">
-            {errors.location && <span>{errors.location}</span>}
-          </div>
+          {errors.location && <div className="invalid-feedback">{errors.location}</div>}
         </div>
-        <button type="submit" onClick={() => notify()}>
+
+        <button type="submit" className="btn btn-primary w-100">
           Update Property
         </button>
       </form>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+      />
     </div>
   );
 };
