@@ -2,9 +2,12 @@ import React from "react";
 import { Link, Outlet  } from "react-router-dom";
 
 export const Navbar = () => {
-  const handelSignOut =()=>{
-    localStorage.setItem('signIn', JSON.stringify({isSignIn: false}))
-  }
+  
+  const handelSignOut = () => {
+    const loginInfo = JSON.parse(localStorage.getItem("userInfo")) || {};
+    const updatedLoginInfo = { ...loginInfo, isSignIn: false };
+    localStorage.setItem("userInfo", JSON.stringify(updatedLoginInfo));
+  };
   return (
 
 <>
@@ -19,6 +22,9 @@ export const Navbar = () => {
           </li>
           <li>
             <Link to="/signin"> Sign In</Link>
+          </li>
+          <li>
+            <Link to="/signup"> Sign up</Link>
           </li>
           <li>
             <Link to="/signout" onClick={handelSignOut}> Sign Out</Link>

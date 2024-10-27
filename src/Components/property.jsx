@@ -1,6 +1,4 @@
 import React from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 import { PropertyImage } from "./PropertyImage";
 import { PropertyTitle } from "./PropertyTitle";
@@ -17,8 +15,6 @@ export const Property = (props) => {
 
   const handelDelete = (id) => {
     onHandleDeleteProprty(id);
-    console.log("Toast error should appear"); 
-    toast.error("Successfully Deleted"); //why dose not work
   };
 
   const handelUpdate = (property) => {
@@ -36,7 +32,7 @@ export const Property = (props) => {
           <PropertyPrice price={price} />
           <PropertyLocation location={location} />
         </div>
-        <button onClick={() => handelDelete(id)}>Delete Property </button>
+        <button onClick={() =>{ handelDelete(id); }}>Delete Property </button>
         <button
           onClick={() => {
             handelUpdate(props.property);

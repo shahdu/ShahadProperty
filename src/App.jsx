@@ -5,6 +5,8 @@ import {
   Route,
   Link,
 } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 
 import ErrorPage from "./Utility/ErrorPage.jsx";
 import { properties as initialProperties } from "./Data.js";
@@ -18,10 +20,12 @@ import { UserDashboard } from "./Components/UserDashboard.jsx";
 import { AdminDashboard } from "./Components/AdminDashboard.jsx";
 import { ProtectedRoute } from "./Routes/ProtectedRoute.jsx";
 import { AdminRoute } from "./Routes/AdminRoute.jsx";
+import { Signup } from "./Components/Signup.jsx";
 
 export const App = () => {
   const [properties, setProperties] = useState(initialProperties);
   const [updateData, setUpdateData] = useState(null);
+
 
   const handleAddProprty = (newProperty) => {
     console.log(newProperty);
@@ -34,10 +38,14 @@ export const App = () => {
     );
 
     setProperties(updatedProperties);
+    toast.success("Property successfully deleted!");
+
+
   };
 
   const handleUpdateProprty = (updatedProperty) => {
     setUpdateData(updatedProperty);
+
   };
 
   const handleUpdateSubmit = (updatedProperty) => {
@@ -70,6 +78,10 @@ export const App = () => {
         {
           path: "/signin",
           element: <Signin />,
+        },
+        {
+          path: "/signup",
+          element: <Signup />,
         },
         {
           path: "/signout",
@@ -124,6 +136,7 @@ export const App = () => {
       <main>
         <div>
           <RouterProvider router={router} />
+          <ToastContainer />
         </div>
       </main>
       <footer>Developed by Shahad Alzoman</footer>

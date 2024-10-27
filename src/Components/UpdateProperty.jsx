@@ -1,10 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { uploadImageToCloudinary } from "../Utility/UploadImage";
 
 export const UpdateProperty = (props) => {
   const navigate = useNavigate();
 
+  const notify = () => {
+    if(validDataInput){
+      toast.success("Successfuly Updated");
+    }else {
+      toast.error("Please fix the errors before submitting."); 
+    };
+}
   const {
     id: updateId,
     title: updateTitle,
@@ -28,6 +38,33 @@ export const UpdateProperty = (props) => {
       [event.target.name]: event.target.value,
     }));
   };
+  const validDataInput = () => {
+    const newError = {};
+
+    if (!property.title.trim() || property.title.length < 3) {
+      newError.title = "Title must be at least 3 character";
+    }
+    if (!/^[a-zA-Z\s]+$/.test(property.title)) {
+      newError.title = "only char";
+    }
+    if (!property.location.trim() || property.location.length < 5) {
+      newError.location = "location must be at least 5 character";
+    }
+
+    if (!property.price) {
+      newError.price = "price is required";
+    }
+    if (!/^[0-9]+(\.[0-9]{1,2})?$/.test(property.price)) {
+      newError.price = "price must be number";
+    }
+    if (property.price < 0) {
+      newError.price = "price must be postive";
+    }
+
+    setErrors(newError);
+
+    return Object.keys(newError).length === 0; // return true if no error
+  };
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -41,25 +78,27 @@ export const UpdateProperty = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     let imageUrl = property.image;
-
-    // If there's a new file, upload it to Cloudinary
-    if (property.image && typeof property.image === "object") {
-      try {
-        imageUrl = await uploadImageToCloudinary(property.image);
-      } catch (error) {
-        console.error("Image upload failed:", error);
-        return;
+    if (validDataInput()) {
+      // If there's a new file, upload it to Cloudinary
+      if (property.image && typeof property.image === "object") {
+        try {
+          imageUrl = await uploadImageToCloudinary(property.image);
+        } catch (error) {
+          console.error("Image upload failed:", error);
+          return;
+        }
       }
+
+      const updatedProperty = {
+        ...property,
+        image: imageUrl,
+      };
+
+      props.onUpdateSubmit(updatedProperty);
+      navigate("/");
     }
-
-    const updatedProperty = {
-      ...property,
-      image: imageUrl,
-    };
-
-    props.onUpdateSubmit(updatedProperty);
-    navigate("/");
   };
 
   return (
@@ -76,6 +115,9 @@ export const UpdateProperty = (props) => {
             onChange={handleChange}
             required
           />
+          <div className="error">
+            {errors.title && <span>{errors.title}</span>}
+          </div>
         </div>
         <div>
           <label htmlFor="image">Image:</label>
@@ -111,6 +153,9 @@ export const UpdateProperty = (props) => {
             onChange={handleChange}
             required
           />
+          <div className="error">
+            {errors.price && <span>{errors.price}</span>}
+          </div>
         </div>
         <div>
           <label htmlFor="location">Location:</label>
@@ -122,8 +167,11 @@ export const UpdateProperty = (props) => {
             onChange={handleChange}
             required
           />
+          <div className="error">
+            {errors.location && <span>{errors.location}</span>}
+          </div>
         </div>
-        <button type="submit">Update Property</button>
+        <button type="submit" onClick={()=>notify()}>Update Property</button>
       </form>
     </div>
   );
