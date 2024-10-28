@@ -102,10 +102,10 @@ export const UpdateProperty = () => {
       image: imageUrl,
     };
 
-    // Update property in the context
     handleUpdateSubmit(updatedProperty);
-    notify("Successfully Updated", true); 
     navigate("/");
+    notify("Successfully Updated", true); 
+
   };
 
   return (

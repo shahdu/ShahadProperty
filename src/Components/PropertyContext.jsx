@@ -1,5 +1,7 @@
 import React, { createContext, useState } from "react";
 import { properties as propertiesData } from "../Data";
+import { ToastContainer, toast } from "react-toastify"; 
+
 export const PropertyContext = createContext();
 
 export const PropertyProvider = ({ children }) => {
@@ -8,12 +10,14 @@ export const PropertyProvider = ({ children }) => {
 
   const handleAddProperty = (newProperty) => {
     setProperties((prevProperties) => [...prevProperties, newProperty]);
+
   };
 
   const handleDeleteProperty = (id) => {
     setProperties((prevProperties) =>
       prevProperties.filter((property) => property.id !== id)
     );
+
   };
 
   const handleUpdateProperty = (property) => {
