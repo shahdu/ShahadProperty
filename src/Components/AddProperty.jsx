@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { nanoid } from "nanoid";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css"; 
 import { uploadImageToCloudinary } from "../Utility/UploadImage";
 import { useNavigate } from "react-router-dom";
+import { PropertyContext } from "./PropertyContext";
 
-export const AddProperty = (props) => {
+export const AddProperty = () => {
   const navigate = useNavigate();
-
+  const {properties,setProperties,handleAddProperty} = useContext(PropertyContext);
   const initialValue = {
     title: "",
     image: "",
@@ -77,7 +78,8 @@ export const AddProperty = (props) => {
         price: property.price,
         location: property.location,
       };
-      props.onHandleAddProprty(newProperty);
+      handleAddProperty(newProperty);
+
       setProperty(initialValue);
       navigate("/");
     }

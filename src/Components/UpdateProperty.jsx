@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify"; 
-import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css"; 
 import "bootstrap/dist/css/bootstrap.min.css"; 
-
 import { uploadImageToCloudinary } from "../Utility/UploadImage";
+import { PropertyContext } from "./PropertyContext"; 
 
-export const UpdateProperty = (props) => {
+export const UpdateProperty = () => {
+  const { updateData, handleUpdateSubmit } = useContext(PropertyContext); 
   const navigate = useNavigate();
-
+  
   const notify = (message, isSuccess) => {
     if (isSuccess) {
       toast.success(message);
@@ -18,12 +19,12 @@ export const UpdateProperty = (props) => {
   };
 
   const {
-    id: updateId,
-    title: updateTitle,
-    image: updateImage,
-    location: updateLocation,
-    price: updatePrice,
-  } = props.updateData || {};
+    id: updateId = '',
+    title: updateTitle = '',
+    image: updateImage = '',
+    location: updateLocation = '',
+    price: updatePrice = 0,
+  } = updateData || {};
 
   const [property, setProperty] = useState({
     id: updateId,
@@ -44,7 +45,6 @@ export const UpdateProperty = (props) => {
 
   const validDataInput = () => {
     const newError = {};
-
     if (!property.title.trim() || property.title.length < 3) {
       newError.title = "Title must be at least 3 characters";
     }
@@ -102,7 +102,8 @@ export const UpdateProperty = (props) => {
       image: imageUrl,
     };
 
-    props.onUpdateSubmit(updatedProperty);
+    // Update property in the context
+    handleUpdateSubmit(updatedProperty);
     notify("Successfully Updated", true); 
     navigate("/");
   };

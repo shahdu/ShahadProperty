@@ -1,18 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "./Card";
+import { PropertyContext } from "./PropertyContext";
 
-export const Property = (props) => {
-  const { onHandleDeleteProprty, onHandleUpdateProprty } = props;
-  const { id, image, title, price, location } = props.property;
+export const Property = ({ property }) => {
+  const { handleDeleteProperty, handleUpdateProperty } = useContext(PropertyContext);
+  const { id, image, title, price, location } = property; 
   const navigate = useNavigate();
 
   const handleDelete = () => {
-    onHandleDeleteProprty(id);
+    handleDeleteProperty(id);
   };
 
   const handleUpdate = () => {
-    onHandleUpdateProprty(props.property);
+    handleUpdateProperty(property);
     navigate("dashboard/admin/updateProperty");
   };
 
